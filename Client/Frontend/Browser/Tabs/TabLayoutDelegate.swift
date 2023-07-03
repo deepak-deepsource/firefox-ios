@@ -95,11 +95,11 @@ class TabLayoutDelegate: NSObject, UICollectionViewDelegateFlowLayout, UIGesture
                 let height: CGFloat = GroupedTabCellProperties.CellUX.defaultCellHeight * CGFloat(groupCount)
                 return CGSize(width: width >= 0 ? Int(width) : 0, height: Int(height))
             } else {
-                return CGSize(width: 0, height: 0)
+                return CGSize.zero
             }
 
         case .regularTabs, .none:
-            guard !tabDisplayManager.filteredTabs.isEmpty else { return CGSize(width: 0, height: 0) }
+            guard !tabDisplayManager.filteredTabs.isEmpty else { return CGSize.zero }
             return CGSize(width: cellWidth, height: self.cellHeightForCurrentDevice())
         }
     }
@@ -109,7 +109,7 @@ class TabLayoutDelegate: NSObject, UICollectionViewDelegateFlowLayout, UIGesture
               let inactiveTabViewModel = tabDisplayManager.inactiveViewModel,
               !inactiveTabViewModel.isActiveTabsEmpty
         else {
-            return CGSize(width: 0, height: 0)
+            return CGSize.zero
         }
 
         let closeAllButtonHeight = InactiveTabCell.UX.CloseAllTabRowHeight

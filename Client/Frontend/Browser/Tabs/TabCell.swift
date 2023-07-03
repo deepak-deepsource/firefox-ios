@@ -172,7 +172,7 @@ class TabCell: UICollectionViewCell,
         if selected {
             setTabSelected(tab.isPrivate, theme: theme)
         } else {
-            layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            layoutMargins = UIEdgeInsets.zero
             layer.borderColor = UIColor.clear.cgColor
             layer.borderWidth = 0
             layer.cornerRadius = GridTabViewController.UX.cornerRadius + TabCell.borderWidth
