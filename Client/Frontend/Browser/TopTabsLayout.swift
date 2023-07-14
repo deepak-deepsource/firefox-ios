@@ -43,12 +43,12 @@ class TopTabsLayoutDelegate: NSObject, UICollectionViewDelegateFlowLayout {
 
     @objc
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: 0, height: 0)
+        return CGSize.zero
     }
 
     @objc
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        return CGSize(width: 0, height: 0)
+        return CGSize.zero
     }
 }
 

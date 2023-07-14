@@ -45,7 +45,7 @@ class BottomSheetViewController: UIViewController, Themeable {
     private lazy var scrollContentView: UIView = .build { _ in }
     private var contentViewBottomConstraint: NSLayoutConstraint!
 
-    private var viewTranslation = CGPoint(x: 0, y: 0)
+    private var viewTranslation = CGPoint.zero
 
     // MARK: Init
     public init(viewModel: BottomSheetViewModel,

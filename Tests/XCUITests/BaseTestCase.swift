@@ -277,12 +277,12 @@ extension XCUIElement {
 
     /// Tap at @offsetPoint point in @self element view. This might not work for simulators lower than iPhone 14 Plus.
     func tapAtPoint(_ offsetPoint: CGPoint) {
-        self.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0)).withOffset(CGVector(dx: offsetPoint.x, dy: offsetPoint.y)).tap()
+        self.coordinate(withNormalizedOffset: CGVector.zero).withOffset(CGVector(dx: offsetPoint.x, dy: offsetPoint.y)).tap()
     }
 
     /// Press at @offsetPoint point in @self element view
     func pressAtPoint(_ offsetPoint: CGPoint, forDuration duration: TimeInterval) {
-        self.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0)).withOffset(CGVector(dx: offsetPoint.x, dy: offsetPoint.y)).press(forDuration: duration)
+        self.coordinate(withNormalizedOffset: CGVector.zero).withOffset(CGVector(dx: offsetPoint.x, dy: offsetPoint.y)).press(forDuration: duration)
     }
 
     /// Tap on app screen at the central of the current element

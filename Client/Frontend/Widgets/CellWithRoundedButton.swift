@@ -57,7 +57,7 @@ class CellWithRoundedButton: UITableViewCell, LegacyNotificationThemeable, Reusa
     }
 
     func initialViewSetup() {
-        separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        separatorInset = UIEdgeInsets.zero
         self.selectionStyle = .default
 
         contentView.addSubview(roundedButton)
