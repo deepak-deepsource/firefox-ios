@@ -114,6 +114,39 @@ public struct AccessibilityIdentifiers {
         public static let back = "Back"
     }
 
+    struct Shopping {
+        static let sheetHeaderTitle = "Shopping.Sheet.HeaderTitle"
+
+        struct ErrorCard {
+            static let card = "Shopping.ErrorCard.Card"
+            static let title = "Shopping.ErrorCard.Title"
+            static let description = "Shopping.ErrorCard.Description"
+            static let primaryAction = "Shopping.ErrorCard.PrimaryAction"
+        }
+
+        struct ReliabilityCard {
+            static let card = "Shopping.ReliabilityCard.Card"
+            static let title = "Shopping.ReliabilityCard.Title"
+            static let ratingLetter = "Shopping.ReliabilityCard.RatingLetter"
+            static let ratingDescription = "Shopping.ReliabilityCard.RatingDescription"
+        }
+
+        struct HighlightsCard {
+            static let card = "Shopping.HighlightsCard.Card"
+            static let footerTitle = "Shopping.HighlightsCard.FooterTitle"
+            static let footerAction = "Shopping.HighlightsCard.FooterAction"
+        }
+
+        struct SettingsCard {
+            static let card = "Shopping.SettingsCard.Card"
+            static let title = "Shopping.SettingsCard.Title"
+            static let expandButton = "Shopping.SettingsCard.ExpandButton"
+            static let productsLabel = "Shopping.SettingsCard.ProductsLabel"
+            static let turnOffButton = "Shopping.SettingsCard.TurnOffButton"
+            static let recommendedProductsSwitch = "Shopping.SettingCard.RecommendedProductsSwitch"
+        }
+    }
+
     struct TabTray {
         static let filteredTabs = "filteredTabs"
         static let deleteCloseAllButton = "TabTrayController.deleteButton.closeAll"
@@ -269,6 +302,10 @@ public struct AccessibilityIdentifiers {
             static let title = "NoImageMode"
         }
 
+        struct BlockPopUp {
+            static let title = "BlockPopUp"
+        }
+
         struct OpenWithMail {
             static let title = "OpenWith.Setting"
         }
@@ -311,10 +348,18 @@ public struct AccessibilityIdentifiers {
             static let usernameField = "usernameField"
             static let passwordField = "passwordField"
             static let websiteField = "websiteField"
+            static let onboardingContinue = "onboardingContinue"
+            static let addCredentialButton = "addCredentialButton"
+            static let editButton = "editButton"
         }
 
         struct Version {
             static let title = "FxVersion"
+        }
+
+        struct TrackingProtection {
+            static let basic = "Settings.TrackingProtectionOption.BlockListBasic"
+            static let strict = "Settings.TrackingProtectionOption.BlockListStrict"
         }
     }
 
@@ -362,10 +407,5 @@ public struct AccessibilityIdentifiers {
         static let rememberCreditCardHeader = "RememberCreditCard.Header"
         static let yesButton = "RememberCreditCard.yesButton"
         static let notNowButton = "RememberCreditCard.notNowButton"
-    }
-
-    struct Components {
-        static let collapseButton = "collapseButton"
-        static let cardTitleLabel = "cardTitleLabel"
     }
 }

@@ -34,10 +34,24 @@ class LibraryCoordinator: BaseCoordinator, LibraryPanelDelegate, LibraryNavigati
     }
 
     func start(with homepanelSection: Route.HomepanelSection) {
+        libraryViewController.childPanelControllers = makeChildPanels()
         libraryViewController.delegate = self
         libraryViewController.navigationHandler = self
         libraryViewController.setupOpenPanel(panelType: homepanelSection.libraryPanel)
         libraryViewController.resetHistoryPanelPagination()
+    }
+
+    private func makeChildPanels() -> [UINavigationController] {
+        let bookmarksPanel = BookmarksPanel(viewModel: BookmarksPanelViewModel(profile: profile))
+        let historyPanel = HistoryPanel(profile: profile, tabManager: tabManager)
+        let downloadsPanel = DownloadsPanel()
+        let readingListPanel = ReadingListPanel(profile: profile)
+        return [
+            ThemedNavigationController(rootViewController: bookmarksPanel),
+            ThemedNavigationController(rootViewController: historyPanel),
+            ThemedNavigationController(rootViewController: downloadsPanel),
+            ThemedNavigationController(rootViewController: readingListPanel)
+        ]
     }
 
     // MARK: - LibraryNavigationHandler
@@ -47,14 +61,11 @@ class LibraryCoordinator: BaseCoordinator, LibraryPanelDelegate, LibraryNavigati
         case .bookmarks:
             makeBookmarksCoordinator(navigationController: navigationController)
         case .history:
-            // HistoryCoordinator will be implemented with FXIOS-6978
-            break
+            makeHistoryCoordinator(navigationController: navigationController)
         case .downloads:
-            // DownloadsCoordinator will be implemented with FXIOS-6978
-            break
+            makeDownloadsCoordinator(navigationController: navigationController)
         case .readingList:
-            // ReadingListCoordinator will be implemented with FXIOS-6978
-            break
+            makeReadingListCoordinator(navigationController: navigationController)
         }
     }
 
@@ -68,6 +79,41 @@ class LibraryCoordinator: BaseCoordinator, LibraryPanelDelegate, LibraryNavigati
         )
         add(child: bookmarksCoordinator)
         (navigationController.topViewController as? BookmarksPanel)?.bookmarkCoordinatorDelegate = bookmarksCoordinator
+    }
+
+    private func makeHistoryCoordinator(navigationController: UINavigationController) {
+        guard !childCoordinators.contains(where: { $0 is HistoryCoordinator }) else { return }
+        let router = DefaultRouter(navigationController: navigationController)
+        let historyCoordinator = HistoryCoordinator(
+            profile: profile,
+            router: router,
+            parentCoordinator: parentCoordinator
+        )
+        add(child: historyCoordinator)
+        (navigationController.topViewController as? HistoryPanel)?.historyCoordinatorDelegate = historyCoordinator
+    }
+
+    private func makeDownloadsCoordinator(navigationController: UINavigationController) {
+        guard !childCoordinators.contains(where: { $0 is DownloadsCoordinator }) else { return }
+        let router = DefaultRouter(navigationController: navigationController)
+        let downloadsCoordinator = DownloadsCoordinator(
+            router: router,
+            profile: profile,
+            parentCoordinator: parentCoordinator
+        )
+        add(child: downloadsCoordinator)
+        (navigationController.topViewController as? DownloadsPanel)?.navigationHandler = downloadsCoordinator
+    }
+
+    private func makeReadingListCoordinator(navigationController: UINavigationController) {
+        guard !childCoordinators.contains(where: { $0 is ReadingListCoordinator }) else { return }
+        let router = DefaultRouter(navigationController: navigationController)
+        let readingListCoordinator = ReadingListCoordinator(
+            parentCoordinator: parentCoordinator,
+            router: router
+        )
+        add(child: readingListCoordinator)
+        (navigationController.topViewController as? ReadingListPanel)?.navigationHandler = readingListCoordinator
     }
 
     // MARK: - LibraryPanelDelegate

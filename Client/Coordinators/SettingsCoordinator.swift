@@ -73,7 +73,7 @@ class SettingsCoordinator: BaseCoordinator,
             return viewController
 
         case .homePage:
-            let viewController = HomePageSettingViewController(prefs: profile.prefs)
+            let viewController = HomePageSettingViewController(prefs: profile.prefs, settingsDelegate: self)
             viewController.profile = profile
             return viewController
 
@@ -110,13 +110,16 @@ class SettingsCoordinator: BaseCoordinator,
                     theme: themeManager.currentTheme
                 )
                 let wallpaperVC = WallpaperSettingsViewController(viewModel: viewModel)
+                wallpaperVC.settingsDelegate = self
                 return wallpaperVC
             } else {
                 return nil
             }
 
         case .contentBlocker:
-            let contentBlockerVC = ContentBlockerSettingViewController(prefs: profile.prefs)
+            let contentBlockerVC = ContentBlockerSettingViewController(prefs: profile.prefs,
+                                                                       isShownFromSettings: false)
+            contentBlockerVC.settingsDelegate = self
             contentBlockerVC.profile = profile
             contentBlockerVC.tabManager = tabManager
             return contentBlockerVC
@@ -195,6 +198,7 @@ class SettingsCoordinator: BaseCoordinator,
 
     func pressedContentBlocker() {
         let viewController = ContentBlockerSettingViewController(prefs: profile.prefs)
+        viewController.settingsDelegate = self
         viewController.profile = profile
         viewController.tabManager = tabManager
         router.push(viewController)
@@ -221,7 +225,8 @@ class SettingsCoordinator: BaseCoordinator,
     // MARK: GeneralSettingsDelegate
 
     func pressedHome() {
-        let viewController = HomePageSettingViewController(prefs: profile.prefs)
+        let viewController = HomePageSettingViewController(prefs: profile.prefs,
+                                                           settingsDelegate: self)
         viewController.profile = profile
         router.push(viewController)
     }

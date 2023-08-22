@@ -38,17 +38,30 @@ class HomePageSettingViewController: SettingsTableViewController, FeatureFlaggab
 
     // MARK: - Initializers
     init(prefs: Prefs,
-         wallpaperManager: WallpaperManagerInterface = WallpaperManager()) {
+         wallpaperManager: WallpaperManagerInterface = WallpaperManager(),
+         settingsDelegate: SettingsDelegate? = nil) {
         self.prefs = prefs
         self.wallpaperManager = wallpaperManager
         super.init(style: .grouped)
+        super.settingsDelegate = settingsDelegate
 
         title = .SettingsHomePageSectionName
         navigationController?.navigationBar.accessibilityIdentifier = AccessibilityIdentifiers.Settings.Homepage.homePageNavigationBar
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: .AppSettingsDone,
+            style: .plain,
+            target: self,
+            action: #selector(done))
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    @objc
+    func done() {
+        settingsDelegate?.didFinish()
     }
 
     // MARK: - View Lifecycle
@@ -134,7 +147,9 @@ class HomePageSettingViewController: SettingsTableViewController, FeatureFlaggab
 
         let historyHighlightsSetting = BoolSetting(with: .historyHighlights,
                                                    titleText: NSAttributedString(string: .Settings.Homepage.CustomizeFirefoxHome.RecentlyVisited))
-        let wallpaperSetting = WallpaperSettings(settings: self, wallpaperManager: wallpaperManager)
+        let wallpaperSetting = WallpaperSettings(settings: self,
+                                                 settingsDelegate: settingsDelegate,
+                                                 wallpaperManager: wallpaperManager)
 
         // Section ordering
         sectionItems.append(TopSitesSettings(settings: self))
@@ -252,29 +267,33 @@ extension HomePageSettingViewController {
         var settings: SettingsTableViewController
         var tabManager: TabManager
         var wallpaperManager: WallpaperManagerInterface
+        weak var settingsDelegate: SettingsDelegate?
 
         override var accessoryType: UITableViewCell.AccessoryType { return .disclosureIndicator }
         override var accessibilityIdentifier: String? { return AccessibilityIdentifiers.Settings.Homepage.CustomizeFirefox.wallpaper }
         override var style: UITableViewCell.CellStyle { return .value1 }
 
         init(settings: SettingsTableViewController,
+             settingsDelegate: SettingsDelegate?,
              and tabManager: TabManager = AppContainer.shared.resolve(),
              wallpaperManager: WallpaperManagerInterface = WallpaperManager()
         ) {
             self.settings = settings
+            self.settingsDelegate = settingsDelegate
             self.tabManager = tabManager
             self.wallpaperManager = wallpaperManager
             super.init(title: NSAttributedString(string: .Settings.Homepage.CustomizeFirefoxHome.Wallpaper))
         }
 
         override func onClick(_ navigationController: UINavigationController?) {
-            if wallpaperManager.canSettingsBeShown {
-                let viewModel = WallpaperSettingsViewModel(wallpaperManager: wallpaperManager,
-                                                           tabManager: tabManager,
-                                                           theme: settings.themeManager.currentTheme)
-                let wallpaperVC = WallpaperSettingsViewController(viewModel: viewModel)
-                navigationController?.pushViewController(wallpaperVC, animated: true)
-            }
+            guard wallpaperManager.canSettingsBeShown else { return }
+
+            let viewModel = WallpaperSettingsViewModel(wallpaperManager: wallpaperManager,
+                                                       tabManager: tabManager,
+                                                       theme: settings.themeManager.currentTheme)
+            let wallpaperVC = WallpaperSettingsViewController(viewModel: viewModel)
+            wallpaperVC.settingsDelegate = settingsDelegate
+            navigationController?.pushViewController(wallpaperVC, animated: true)
         }
     }
 }
